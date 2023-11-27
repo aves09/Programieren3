@@ -1,9 +1,7 @@
-class Grass {
+class LivingCreature {
     constructor(x, y) {
         this.x = x;
         this.y = y;
-        this.colorCode = 1;
-        this.rounds = 0;
         this.neighbors = [
             [this.x - 1, this.y - 1],
             [this.x, this.y - 1],
@@ -33,6 +31,19 @@ class Grass {
         //wenn ja, dann speichere die nachbarposition in der gefundenen Liste
         //Gebe gefunden Liste aus
         return found;
+    }
+
+}
+
+
+
+
+class Grass extends LivingCreature {
+    constructor(x, y) {
+        super(x, y)
+        this.colorCode = 1;
+        this.rounds = 0;
+
     }
     mul() {
         this.rounds++;
@@ -53,26 +64,14 @@ class Grass {
 }
 
 
-class Grassfresser {
+class Grassfresser extends LivingCreature {
     constructor(x, y) {
-        this.x = x;
-        this.y = y;
+        super(x, y)
         this.colorCode = 2;
         //zwei 
         this.eaten = 0;
         this.noteaten = 0;
         this.rounds = 0;
-        this.neighbors = [
-            [this.x - 1, this.y - 1],
-            [this.x, this.y - 1],
-            [this.x + 1, this.y - 1],
-            [this.x - 1, this.y],
-            [this.x + 1, this.y],
-            [this.x - 1, this.y + 1],
-            [this.x, this.y + 1],
-            [this.x + 1, this.y + 1]
-
-        ]
     }
     updateNeighbors() {
         this.neighbors = [
@@ -88,25 +87,11 @@ class Grassfresser {
     }
     findFields(symbol) {
         this.updateNeighbors();
-        //erstelle Gefunden Liste
-        let found = [];
-        //durch die nachbarfelder laufen
-        for (let i = 0; i < this.neighbors.length; i++) {
-            let pos = this.neighbors[i]; //x und y
-            let posX = pos[0];
-            let posY = pos[1];
-            //checke in matricx ob wert null drin steht
-            if (posX >= 0 && posY >= 0 && posY < matrix.length && posX < matrix[0].length)
-                if (matrix[posY][posX] === symbol) {
-                    found.push(pos)
-                }
-        }
-        //wenn ja, dann speichere die nachbarposition in der gefundenen Liste
-        //Gebe gefunden Liste aus
-        return found;
+        return super.findFields(symbol);
     }
 
     move() {
+
         //leere Felder finden in der nachbarschaft
         let emptyFields = this.findFields(0);
         if (emptyFields.length > 0) {
@@ -121,7 +106,6 @@ class Grassfresser {
             this.x = newX;
             this.y = newY;
         }
-
     }
     eat() {
         let grassFields = this.findFields(1);
@@ -200,26 +184,14 @@ class Grassfresser {
 
 
 
-class Fleischfresser {
+class Fleischfresser extends LivingCreature {
     constructor(x, y) {
-        this.x = x;
-        this.y = y;
+        super(x, y)
         this.colorCode = 3;
         //zwei 
         this.eaten = 0;
         this.noteaten = 0;
         this.rounds = 0;
-        this.neighbors = [
-            [this.x - 1, this.y - 1],
-            [this.x, this.y - 1],
-            [this.x + 1, this.y - 1],
-            [this.x - 1, this.y],
-            [this.x + 1, this.y],
-            [this.x - 1, this.y + 1],
-            [this.x, this.y + 1],
-            [this.x + 1, this.y + 1]
-
-        ]
     }
     updateNeighbors() {
         this.neighbors = [
@@ -234,23 +206,8 @@ class Fleischfresser {
         ]
     }
     findFields(symbol) {
-        this.updateNeighbors();
-        //erstelle Gefunden Liste
-        let found = [];
-        //durch die nachbarfelder laufen
-        for (let i = 0; i < this.neighbors.length; i++) {
-            let pos = this.neighbors[i]; //x und y
-            let posX = pos[0];
-            let posY = pos[1];
-            //checke in matricx ob wert null drin steht
-            if (posX >= 0 && posY >= 0 && posY < matrix.length && posX < matrix[0].length)
-                if (matrix[posY][posX] === symbol) {
-                    found.push(pos)
-                }
-        }
-        //wenn ja, dann speichere die nachbarposition in der gefundenen Liste
-        //Gebe gefunden Liste aus
-        return found;
+        this.updateNeighbors()
+        return super.findFields(symbol);
     }
     move() {
         //leere Felder finden in der nachbarschaft
@@ -344,10 +301,11 @@ class Fleischfresser {
 }
 
 
-class Jager {
+class Jager extends LivingCreature {
     constructor(x, y) {
-        this.x = x;
-        this.y = y;
+        // this.x = x;
+        // this.y = y;
+        super(x,y)
         this.colorCode = 4;
         //zwei 
         this.eaten = 0;
@@ -427,24 +385,7 @@ class Jager {
     }
     findFields(symbol) {
         this.updateNeighbors();
-        //erstelle Gefunden Liste
-        let found = [];
-        //durch die nachbarfelder laufen
-        for (let i = 0; i < this.neighbors.length; i++) {
-            let pos = this.neighbors[i]; //x und y
-            let posX = pos[0];
-            let posY = pos[1];
-            //checke in matricx ob wert null drin steht
-            if (posX >= 0 && posY >= 0 && posY < matrix.length && posX < matrix[0].length)
-                if (matrix[posY][posX] === symbol) {
-                    found.push(pos)
-                }
-        }
-        //wenn ja, dann speichere die nachbarposition in der gefundenen Liste
-        //Gebe gefunden Liste aus
-        //console.log(found);
-        return found;
-
+        return super.findFields(symbol);
     }
     eat() {
         let fleischfresserFields = this.findFields(3);
@@ -499,13 +440,13 @@ class Jager {
         }
     }
     mul(newX, newY) {
-        if(Math.floor(random(0,2))){
+        if (Math.floor(random(0, 2))) {
             frezzerArr.push(new Frezzer(newX, newY));
             matrix[newY][newX] = 5;
-         }else{
-             jagerArr.push(new Jager(newX, newY));
-             matrix[newY][newX] = this.colorCode;
-             this.eaten = 0;
+        } else {
+            jagerArr.push(new Jager(newX, newY));
+            matrix[newY][newX] = this.colorCode;
+            this.eaten = 0;
 
         }
     }
@@ -520,26 +461,27 @@ class Jager {
 
 
 
-class Frezzer {
+class Frezzer extends LivingCreature {
     constructor(x, y) {
-        this.x = x;
-        this.y = y;
+        // this.x = x;
+        // this.y = y;
+        super(x,y)
         this.colorCode = 5;
         //zwei 
         this.eaten = 0;
         this.noteaten = 0;
         this.rounds = 0;
-        this.neighbors = [
-            [this.x - 1, this.y - 1],
-            [this.x, this.y - 1],
-            [this.x + 1, this.y - 1],
-            [this.x - 1, this.y],
-            [this.x + 1, this.y],
-            [this.x - 1, this.y + 1],
-            [this.x, this.y + 1],
-            [this.x + 1, this.y + 1]
+        // this.neighbors = [
+        //     [this.x - 1, this.y - 1],
+        //     [this.x, this.y - 1],
+        //     [this.x + 1, this.y - 1],
+        //     [this.x - 1, this.y],
+        //     [this.x + 1, this.y],
+        //     [this.x - 1, this.y + 1],
+        //     [this.x, this.y + 1],
+        //     [this.x + 1, this.y + 1]
 
-        ]
+        // ]
     }
     updateNeighbors() {
         this.neighbors = [
@@ -555,23 +497,7 @@ class Frezzer {
     }
     findFields(symbol) {
         this.updateNeighbors();
-        //erstelle Gefunden Liste
-        let found = [];
-        //durch die nachbarfelder laufen
-        for (let i = 0; i < this.neighbors.length; i++) {
-            let pos = this.neighbors[i]; //x und y
-            let posX = pos[0];
-            let posY = pos[1];
-            //checke in matricx ob wert null drin steht
-            if (posX >= 0 && posY >= 0 && posY < matrix.length && posX < matrix[0].length)
-                if (matrix[posY][posX] === symbol) {
-                    found.push(pos)
-                }
-        }
-        //wenn ja, dann speichere die nachbarposition in der gefundenen Liste
-        //Gebe gefunden Liste aus
-        //console.log(found);
-        return found;
+        return super.findFields(symbol);
 
     }
 
@@ -618,7 +544,7 @@ class Frezzer {
 
                 }
             }
-        } 
+        }
 
 
 
@@ -641,7 +567,7 @@ class Frezzer {
                         grassArr.splice(i, 1);
                         fleischfresserArr.push(new Fleischfresser(newX, newY))
 
-                        
+
                         break;
                     }
 
@@ -693,8 +619,8 @@ class Frezzer {
                     if (grassfresserObj.x === newX && grassfresserObj.y === newY) {
                         //dieses Grassobjekt löschen
                         fleischfresserArr.splice(i, 1);
-                        if(Math.floor(random(0,2))){
-                            jagerArr.push(new Jager(newX, newY) )
+                        if (Math.floor(random(0, 2))) {
+                            jagerArr.push(new Jager(newX, newY))
                         }
                         break;
                     }
@@ -702,17 +628,12 @@ class Frezzer {
                 }
             }
         }
-         
-        
-        
-        
-        
-        
 
 
-            if (this.noteaten >= 2) {
-                this.die();
-            }
+
+        if (this.noteaten >= 2) {
+            this.die();
+        }
 
     }
 
@@ -731,16 +652,6 @@ class Frezzer {
 
         }
     }
-
-
-
-
-
-
-
-
-
-   
 
 
 
