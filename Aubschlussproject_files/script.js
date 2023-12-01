@@ -8,7 +8,7 @@ let matrix = [
     [1, 1, 1, 0, 3]
 ];
 
-let side = 10;
+let side = 30;
 let fr = 5;
 //lebewesenlisten
 let grassArr = [];
