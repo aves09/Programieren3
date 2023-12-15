@@ -1,5 +1,4 @@
 const LivingCreature = require("./LivingCreature.js")
-const Frezzer = require("./Frezzer.js")
 module.exports = class Jager extends LivingCreature {
     constructor(x, y) {
         // this.x = x;
@@ -140,15 +139,11 @@ module.exports = class Jager extends LivingCreature {
         }
     }
     mul(newX, newY) {
-        if (Math.floor(Math.random()*2)) {
-            frezzerArr.push(new Frezzer(newX, newY));
-            matrix[newY][newX] = 5;
-        } else {
+
             jagerArr.push(new Jager(newX, newY));
             matrix[newY][newX] = this.colorCode;
             this.eaten = 0;
 
-        }
     }
 
 
